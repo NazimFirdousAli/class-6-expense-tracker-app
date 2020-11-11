@@ -1,8 +1,9 @@
-import React from 'react'
-
+import React,{useContext} from 'react'
+import TransContext from './transContext.js'
 const Child = () => {
 
-    // let transcation = useContext(contextTransaction);
+
+  let transactions = useContext(TransContext);
     // console.log(transcation)
 
     // let [newDesc, setDesc] = useState('');
@@ -31,16 +32,22 @@ const Child = () => {
               10000
               </h3>
           </div>
-  
+
           <div className='head'>
             Transation History
               <hr></hr>  
           </div>
             <ul className='listitem'>
-              <li >
-                <span>Hello</span>
-                <span>5000</span>
-              </li>
+              {transactions.map((transObj,index) => {
+                return(
+                  <li>
+                    <span>{transObj.desc}</span>
+                    <span>{transObj.amount}</span>
+                  </li>
+                )
+
+              })}
+              
                 
             </ul>
   
