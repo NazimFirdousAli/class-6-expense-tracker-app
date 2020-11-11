@@ -1,18 +1,55 @@
-import React,{useContext} from 'react'
+import React,{useContext,useState} from 'react'
 import TransContext from './transContext.js'
 const Child = () => {
 
 
-  let transactions = useContext(TransContext);
-    // console.log(transcation)
+  let {transactions, addTransaction} = useContext(TransContext);
 
-    // let [newDesc, setDesc] = useState('');
-    // let [newAmoount, setAmount] = useState(0);
-    // let handleAddition = (event) => {
-    //   event.preventDefault();
-    //   console.log(newDesc,newAmoount);
+  let [newDesc, setDesc] = useState('');
+  let [newAmount, setAmount] = useState(0);
+    
 
-    // }
+  const handleAddition = (event) => {
+    
+    event.preventDefault();
+    console.log(newDesc,newAmount);
+    if(Number(newAmount) === 0){
+      alert('Please enter corrent value')
+    }
+    else{
+    addTransaction({
+      desc: newDesc,
+      amount: Number(newAmount)
+    })
+  }
+
+  }
+
+  const getIncome = () => {
+    let income = 0;
+    for(var i=0;i<transactions.length;i++){
+      if(transactions[i].amount>0){
+        income = income+transactions[i].amount;
+      }
+    }
+    return income;
+  }
+
+  const getExpense = () => {
+    let expense = 0;
+    for(var i=0;i<transactions.length;i++){
+      if(transactions[i].amount<0)
+        expense = expense+transactions[i].amount;
+    }
+    return expense;
+  }
+
+  const currentBalance = () => {
+    let balance = getIncome()+getExpense();
+    return balance;
+    
+  }
+
     return(
         <div className="App">
         <header className='head'>
@@ -22,14 +59,14 @@ const Child = () => {
         <body>
           Current Balance  
           <div className='balance'>
-            <b>$500.00</b>
+            <b>{currentBalance()}</b>
           </div>
           <div className='incomeexpense'>
               <h3>INCOME<br />
-              500
+              {getIncome()}
               </h3>
             <h3>BALANCE<br />
-              10000
+              {getExpense()}
               </h3>
           </div>
 
@@ -40,7 +77,7 @@ const Child = () => {
             <ul className='listitem'>
               {transactions.map((transObj,index) => {
                 return(
-                  <li>
+                  <li key= {index}>
                     <span>{transObj.desc}</span>
                     <span>{transObj.amount}</span>
                   </li>
@@ -51,20 +88,19 @@ const Child = () => {
                 
             </ul>
   
-          {/* <div className='tanscation-form' onSubmit={handleAddition}> */}
-          <div className='tanscation-form'>
+          <form className='tanscation-form' onSubmit = {handleAddition}>
             Add New Transaction
               <hr></hr>  
               Description
               <br />
-              <input type = 'text' required ></input>
+              <input type = 'text' onChange={(ev) => setDesc(ev.target.value)} required />
               <br />
               Transaction Amount
               <br />
-              <input type = 'number'  required ></input>
-          </div>
+              <input type = 'number'  onChange = {(ev) => setAmount(ev.target.value)} required />
           <br/>
           <input type='submit' value ='Add transcation' />
+          </form>
   
         </body>
       </div>
