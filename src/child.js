@@ -3,10 +3,11 @@ import TransContext from './transContext.js'
 const Child = () => {
 
 
-  let {transactions, addTransaction} = useContext(TransContext);
+  let {transactions, addTransaction, deleteTransaction} = useContext(TransContext);
 
   let [newDesc, setDesc] = useState('');
   let [newAmount, setAmount] = useState(0);
+  console.log(transactions);
     
 
   const handleAddition = (event) => {
@@ -59,14 +60,14 @@ const Child = () => {
         <body>
           Current Balance  
           <div className='balance'>
-            <b>{currentBalance()}</b>
+            <b>${currentBalance()}</b>
           </div>
           <div className='incomeexpense'>
               <h3>INCOME<br />
-              {getIncome()}
+              ${getIncome()}
               </h3>
             <h3>BALANCE<br />
-              {getExpense()}
+              ${getExpense()}
               </h3>
           </div>
 
@@ -78,9 +79,13 @@ const Child = () => {
               {transactions.map((transObj,index) => {
                 return(
                   <li key= {index}>
+                    <button className='deleteButton' >X</button>
+                    <br />
                     <span>{transObj.desc}</span>
-                    <span>{transObj.amount}</span>
+                    <span>$ {transObj.amount}</span>
+                      
                   </li>
+                  
                 )
 
               })}
@@ -97,7 +102,7 @@ const Child = () => {
               <br />
               Transaction Amount
               <br />
-              <input type = 'number'  onChange = {(ev) => setAmount(ev.target.value)} required />
+              <input type = 'number' step="0.01" placeholder = '$'  onChange = {(ev) => setAmount(ev.target.value)} required />
           <br/>
           <input type='submit' value ='Add transcation' />
           </form>

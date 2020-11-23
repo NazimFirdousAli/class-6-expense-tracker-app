@@ -3,10 +3,10 @@ import TransactionReducer from './transReducer.js';
 
 
 let initialTransactions = [
-    {desc: 'cash', amount: 1500},
-    {desc: 'Vegetable', amount: -100},
-    {desc: 'Interest', amount: 9000},
-    {desc: 'Cold Drink', amount: -90},
+    {id: 0, desc: 'cash', amount: 1500},
+    {id: 1,desc: 'Vegetable', amount: -100},
+    {id: 2,desc: 'Interest', amount: 9000},
+    {id: 3,desc: 'Cold Drink', amount: -90},
     
   ]
 
@@ -27,6 +27,18 @@ export const TransProvider = ({children}) => {
         })
 
     }
+
+    function deleteTransaction(transObj){
+        dispatch({
+            type: 'DELETE TRANSACTION',
+            payload: {
+                amount:transObj.amount,
+                desc: transObj.desc
+            }
+        })
+
+    }
+
     return(
         <TransContext.Provider value={{
             transactions: state,
